@@ -1,7 +1,7 @@
 import axios from "axios";
 import { getLocalStorage } from "../utils/handleLocalStorage";
 
-const BASE_URL = "https://datingapp-yoru-backend.herokuapp.com/notification";
+const BASE_URL = "https://datingapp-back.herokuapp.com/notification";
 
 export const getNotifications = async (token: string) => {
   try {

@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { NextRouter } from "next/router";
 import { setLocalStorage } from "../utils/handleLocalStorage";
-const BASE_URL = "https://datingapp-yoru-backend.herokuapp.com/auth";
+const BASE_URL = "https://datingapp-back.herokuapp.com/auth";
 
 let axiosConfig = {
   withCredentials: true,
