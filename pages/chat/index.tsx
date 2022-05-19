@@ -40,7 +40,7 @@ const ChatList = ({ _id, avatar, username }: ChatListProps) => {
   );
 };
 
-function chat({}: Props) {
+function Chat({}: Props) {
   const dispatch = useAppDispatch();
   const chatUserInfosSelector = useAppSelector((state) => state.chatList);
   useEffect(() => {
@@ -79,4 +79,4 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   };
 };
 
-export default chat;
+export default Chat;
