@@ -14,9 +14,8 @@ export const getUsers = createAsyncThunk("users", async () => {
 });
 
 export const getMyPage = async (token: string) => {
-  const TOKEN = getLocalStorage("wemewe-token");
   const response = await axios.get(`${BASE_URL}/mypage`, {
-    headers: { token: TOKEN },
+    headers: { token: token },
   });
   return response.data;
 };
