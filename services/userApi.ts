@@ -3,7 +3,7 @@ import axios from "axios";
 import { NextRouter } from "next/router";
 import { getLocalStorage } from "../utils/handleLocalStorage";
 
-const BASE_URL = "http://localhost:5000/user";
+const BASE_URL = "https://datingapp-yoru-backend.herokuapp.com/user";
 
 export const getUsers = createAsyncThunk("users", async () => {
   const TOKEN = getLocalStorage("wemewe-token");

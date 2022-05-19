@@ -1,7 +1,7 @@
 import axios from "axios";
 import { getLocalStorage } from "../utils/handleLocalStorage";
 
-const BASE_URL = "http://localhost:5000/chat";
+const BASE_URL = "https://datingapp-yoru-backend.herokuapp.com/chat";
 
 export const getChat = async (
   token: string,
