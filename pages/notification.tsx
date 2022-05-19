@@ -1,16 +1,15 @@
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import UserCard from "../components/UserCard";
 import { getNotifications } from "../services/notificationApi";
 import { getMyPage } from "../services/userApi";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { isFavorite } from "../utils/common";
 
-interface Props extends Favorites {
-  sendersInfo: Array<UserInfo>;
-}
+interface Props {}
 
 interface NotificationListProps extends UserInfo {}
 
@@ -37,9 +36,7 @@ const NotificationList = ({
         <div className="flex items-center p-2">
           <Image
             className="rounded-full"
-            src={`${process.env.HOST_URL}/${
-              avatar ? avatar : "uploads/default-user-image.png"
-            }`}
+            src={`${avatar ? avatar : "/hushimiinari.jpeg"}`}
             width={36}
             height={36}
           />
@@ -73,7 +70,13 @@ const NotificationList = ({
   );
 };
 
-function Notification({ sendersInfo, favorites }: Props) {
+function Notification({}: Props) {
+  const dispatch = useAppDispatch();
+  const myInfoSelector = useAppSelector((state) => state.myInfo);
+  const notificationInfo = useAppSelector((state) => state.notificationInfo);
+  useEffect(() => {
+    dispatch(getNotifications());
+  }, []);
   return (
     <>
       <div>
@@ -84,7 +87,7 @@ function Notification({ sendersInfo, favorites }: Props) {
         </Head>
         <div className="pt-20 pb-20 flex justify-center p-4 md:text-sm mobile:text-sm">
           <div className="flex flex-col items-center w-full shadow-xl">
-            {sendersInfo.map((sender, index) => (
+            {notificationInfo.senderInfo?.map((sender, index) => (
               <NotificationList
                 key={index}
                 _id={sender._id}
@@ -93,7 +96,7 @@ function Notification({ sendersInfo, favorites }: Props) {
                 introduction={sender.introduction}
                 birthday={sender.birthday}
                 gender={sender.gender}
-                favorites={favorites}
+                favorites={myInfoSelector.myInfo?.favorites}
               />
             ))}
           </div>
@@ -104,12 +107,12 @@ function Notification({ sendersInfo, favorites }: Props) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const notification = await getNotifications(ctx.req.cookies["wemewe-token"]);
-  const myInfo = await getMyPage();
+  // const notification = await getNotifications(ctx.req.cookies["wemewe-token"]);
+  // const myInfo = await getMyPage();
 
   return {
     props: {
-      sendersInfo: notification,
+      // sendersInfo: notification,
       // favorites: myInfo.favorites ?? [],
     },
   };

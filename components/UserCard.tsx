@@ -62,7 +62,7 @@ function UserCard({
     >
       <div className="">
         <Image
-          src={`/${avatar ? avatar : "uploads/default-user-image.png"}`}
+          src={`${avatar ? avatar : "/hushimiinari.jpeg"}`}
           width={384}
           height={384}
           className="rounded-md"

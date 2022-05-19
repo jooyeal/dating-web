@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ["localhost"],
+    domains: ["res.cloudinary.com"],
   },
   env: {
     HOST_URL: "https://datingapp-back.herokuapp.com",

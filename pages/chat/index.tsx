@@ -2,15 +2,11 @@ import { GetServerSideProps } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect } from "react";
 import { getChatList } from "../../services/userApi";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 
-interface Props {
-  chatUserInfos: Array<{
-    conversationid: string;
-    targetUserInfo: UserInfo;
-  }>;
-}
+interface Props {}
 
 interface ChatListProps {
   _id: string;
@@ -32,9 +28,7 @@ const ChatList = ({ _id, avatar, username }: ChatListProps) => {
       <div className="flex items-center p-2">
         <Image
           className="rounded-full"
-          src={`${process.env.HOST_URL}/${
-            avatar ? avatar : "uploads/default-user-image.png"
-          }`}
+          src={`${avatar ? avatar : "/hushimiinari.jpeg"}`}
           width={36}
           height={36}
         />
@@ -46,7 +40,12 @@ const ChatList = ({ _id, avatar, username }: ChatListProps) => {
   );
 };
 
-function chat({ chatUserInfos }: Props) {
+function chat({}: Props) {
+  const dispatch = useAppDispatch();
+  const chatUserInfosSelector = useAppSelector((state) => state.chatList);
+  useEffect(() => {
+    dispatch(getChatList());
+  }, []);
   return (
     <div>
       <Head>
@@ -57,7 +56,7 @@ function chat({ chatUserInfos }: Props) {
       <div className="pt-20 pb-20 flex flex-col items-center p-4 md:text-sm mobile:text-sm">
         <div className="flex justify-center text-2xl font-bold">Chat</div>
         <div className="flex flex-col items-center w-full shadow-xl">
-          {chatUserInfos.map((chat, index) => (
+          {chatUserInfosSelector.chatUserInfos?.map((chat, index) => (
             <ChatList
               key={index}
               _id={chat.conversationid}
@@ -72,10 +71,10 @@ function chat({ chatUserInfos }: Props) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const chatUserInfos = await getChatList(ctx.req.cookies["wemewe-token"]);
+  // const chatUserInfos = await getChatList(ctx.req.cookies["wemewe-token"]);
   return {
     props: {
-      chatUserInfos,
+      // chatUserInfos,
     },
   };
 };

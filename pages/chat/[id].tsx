@@ -33,7 +33,7 @@ const Chat = ({ avatar, content, isMe }: ChatProps) => {
           <div className="basis-2/12 flex justify-center items-start pt-1">
             <Image
               className="rounded-full"
-              src={`${process.env.HOST_URL}/${avatar}`}
+              src={`${avatar ? avatar : "/hushimiinari.jpeg"}`}
               width={36}
               height={36}
             />
@@ -44,7 +44,7 @@ const Chat = ({ avatar, content, isMe }: ChatProps) => {
           <div className="basis-2/12 flex justify-center items-start pt-1">
             <Image
               className="rounded-full"
-              src={`${process.env.HOST_URL}/${avatar}`}
+              src={`${avatar ? avatar : "/hushimiinari.jpeg"}`}
               width={36}
               height={36}
             />
@@ -132,7 +132,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     ctx.req.cookies["wemewe-token"],
     ctx.query?.id ?? ""
   );
-  console.log(res);
   return {
     props: {
       currentUser: res.currentUser,
