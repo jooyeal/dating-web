@@ -7,7 +7,7 @@ import { registUser } from "../services/authApi";
 
 type Props = {};
 
-function regist({}: Props) {
+function Regist({}: Props) {
   const router = useRouter();
   const [userInfo, setUserInfo] = useState<RegistInfo>({
     email: "",
@@ -113,4 +113,4 @@ function regist({}: Props) {
   );
 }
 
-export default regist;
+export default Regist;

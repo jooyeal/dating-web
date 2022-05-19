@@ -8,7 +8,7 @@ import { excuteLogin } from "../services/authApi";
 
 type Props = {};
 
-function login({}: Props) {
+function Login({}: Props) {
   const router = useRouter();
   const authState = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
@@ -76,4 +76,4 @@ function login({}: Props) {
   );
 }
 
-export default login;
+export default Login;

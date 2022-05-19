@@ -14,7 +14,7 @@ interface Props {
   };
 }
 
-function setting({ userInfo }: Props) {
+function Setting({ userInfo }: Props) {
   return (
     <div>
       <Head>
@@ -63,4 +63,4 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   };
 };
 
-export default setting;
+export default Setting;

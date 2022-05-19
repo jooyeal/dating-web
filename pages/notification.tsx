@@ -74,7 +74,7 @@ const NotificationList = ({
   );
 };
 
-function notification({ sendersInfo, favorites }: Props) {
+function Notification({ sendersInfo, favorites }: Props) {
   return (
     <>
       <div>
@@ -116,4 +116,4 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   };
 };
 
-export default notification;
+export default Notification;

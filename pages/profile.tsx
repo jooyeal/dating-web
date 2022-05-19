@@ -29,7 +29,7 @@ export const Info = ({ label, content }: InfoProps) => {
   );
 };
 
-function profile({ userInfo }: Props) {
+function Profile({ userInfo }: Props) {
   const router = useRouter();
   const [img, setImg] = useState<any>();
   const [introduction, setIntroduction] = useState<string>(
@@ -112,4 +112,4 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   };
 };
 
-export default profile;
+export default Profile;
