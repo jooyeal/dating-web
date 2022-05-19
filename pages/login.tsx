@@ -67,7 +67,7 @@ function Login({}: Props) {
               LOGIN
             </button>
             <Link href="/regist">
-              <a className="text-blue-500">let's user regist</a>
+              <a className="text-blue-500">lets user regist</a>
             </Link>
           </div>
         </div>

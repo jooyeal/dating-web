@@ -1,7 +1,6 @@
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import { userInfo } from "os";
 import React, { useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import UserCard from "../components/UserCard";
@@ -66,7 +65,7 @@ const NotificationList = ({
           />
           <div>
             if you want to chat with
-            <span className="text-lg font-bold">{username}</span>, send a heart
+            <span className="text-lg font-bold">{username}</span> send a heart
           </div>
         </div>
       )}
