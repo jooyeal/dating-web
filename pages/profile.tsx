@@ -104,7 +104,7 @@ function Profile({ userInfo }: Props) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const res = await getMyPage(ctx.req.cookies["wemewe-token"]);
+  const res = await getMyPage();
   return {
     props: {
       userInfo: res,

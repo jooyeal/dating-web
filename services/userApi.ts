@@ -13,12 +13,13 @@ export const getUsers = createAsyncThunk("users", async () => {
   return response.data;
 });
 
-export const getMyPage = async (token: string) => {
+export const getMyPage = createAsyncThunk("mypage", async () => {
+  const TOKEN = getLocalStorage("wemewe-token");
   const response = await axios.get(`${BASE_URL}/mypage`, {
-    headers: { token: token },
+    headers: { token: TOKEN },
   });
   return response.data;
-};
+});
 
 export const uploadImage = async (formData: any, router: NextRouter) => {
   try {

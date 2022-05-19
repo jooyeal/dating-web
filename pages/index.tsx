@@ -5,22 +5,21 @@ import UserCard from "../components/UserCard";
 import { getMyPage, getUsers } from "../services/userApi";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 
-interface Props {
-  favorites: Array<{
-    userid: string;
-  }>;
-  currentUser: string;
-}
-const Home = ({ favorites, currentUser }: Props) => {
+interface Props {}
+const Home = ({}: Props) => {
   const dispatch = useAppDispatch();
   const usersSelector = useAppSelector((state) => state.users);
+  const myInfoSelector = useAppSelector((state) => state.myInfo);
   useEffect(() => {
     dispatch(getUsers());
+    dispatch(getMyPage());
   }, []);
 
   const isFavorite = (userId: string) => {
-    const match = favorites.filter((favorite) => favorite.userid === userId);
-    if (match.length !== 0) return true;
+    const match = myInfoSelector.myInfo.favorites?.filter(
+      (favorite) => favorite.userid === userId
+    );
+    if (match?.length !== 0) return true;
     return false;
   };
 
@@ -34,7 +33,7 @@ const Home = ({ favorites, currentUser }: Props) => {
       <div>
         <div className="pt-20 pb-20 flex flex-col items-center gap-6">
           {usersSelector.users.map((user, index) => {
-            if (user._id !== currentUser)
+            if (user._id !== myInfoSelector.myInfo.id)
               return (
                 <UserCard
                   key={index}
@@ -55,12 +54,8 @@ const Home = ({ favorites, currentUser }: Props) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const res = await getMyPage(ctx.req.cookies["wemewe-token"]);
   return {
-    props: {
-      favorites: res.favorites ?? [],
-      currentUser: res._id,
-    },
+    props: {},
   };
 };
 

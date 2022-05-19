@@ -105,12 +105,12 @@ function Notification({ sendersInfo, favorites }: Props) {
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const notification = await getNotifications(ctx.req.cookies["wemewe-token"]);
-  const myInfo = await getMyPage(ctx.req.cookies["wemewe-token"]);
+  const myInfo = await getMyPage();
 
   return {
     props: {
       sendersInfo: notification,
-      favorites: myInfo.favorites ?? [],
+      // favorites: myInfo.favorites ?? [],
     },
   };
 };
