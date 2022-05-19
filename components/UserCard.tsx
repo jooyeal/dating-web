@@ -26,7 +26,6 @@ function UserCard({
 }: Props) {
   const [open, setOpen] = useState<boolean>(false);
   const [favorite, setFavorite] = useState<boolean>(isFavorite);
-
   const onDoubleClick = () => {
     console.log("dobule");
   };
@@ -63,9 +62,7 @@ function UserCard({
     >
       <div className="">
         <Image
-          src={`${process.env.HOST_URL}/${
-            avatar ? avatar : "uploads/default-user-image.png"
-          }`}
+          src={`/${avatar ? avatar : "uploads/default-user-image.png"}`}
           width={384}
           height={384}
           className="rounded-md"

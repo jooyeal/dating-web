@@ -2,9 +2,13 @@ declare interface UserInfo {
   _id: string;
   username: string;
   introduction: string;
+  favorites?: Array<{
+    userid: string;
+  }>;
   avatar: string;
   birthday: string;
   gender: string;
+  email?: string;
 }
 
 declare interface RegistInfo {

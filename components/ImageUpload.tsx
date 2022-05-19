@@ -48,9 +48,7 @@ function ImageUpload({ img, setImg }: Props) {
         {preview === "" && img === "" ? (
           <div>add image</div>
         ) : (
-          <img
-            src={preview !== "" ? preview : `http://localhost:5000/${img}`}
-          />
+          <img src={preview !== "" ? preview : `${img}`} />
         )}
       </div>
     </div>

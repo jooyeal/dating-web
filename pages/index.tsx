@@ -14,13 +14,15 @@ const Home = ({}: Props) => {
     dispatch(getUsers());
     dispatch(getMyPage());
   }, []);
-
   const isFavorite = (userId: string) => {
-    const match = myInfoSelector.myInfo.favorites?.filter(
+    const match = myInfoSelector.myInfo?.favorites?.filter(
       (favorite) => favorite.userid === userId
     );
-    if (match?.length !== 0) return true;
-    return false;
+    if (match?.length !== 0) {
+      return true;
+    } else {
+      return false;
+    }
   };
 
   return (
@@ -33,7 +35,7 @@ const Home = ({}: Props) => {
       <div>
         <div className="pt-20 pb-20 flex flex-col items-center gap-6">
           {usersSelector.users.map((user, index) => {
-            if (user._id !== myInfoSelector.myInfo.id)
+            if (user._id !== myInfoSelector.myInfo?._id)
               return (
                 <UserCard
                   key={index}

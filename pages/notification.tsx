@@ -12,7 +12,7 @@ interface Props extends Favorites {
   sendersInfo: Array<UserInfo>;
 }
 
-interface NotificationListProps extends Favorites, UserInfo {}
+interface NotificationListProps extends UserInfo {}
 
 const NotificationList = ({
   _id,

@@ -10,22 +10,14 @@ interface SerializedError {
 }
 // Define a type for the slice state
 interface MyPageState {
-  myInfo: {
-    favorites?: Array<{
-      userid: string;
-    }>;
-    id: string;
-  };
+  myInfo?: UserInfo;
   status: string;
   error: SerializedError;
 }
 
 // Define the initial state using that type
 const initialState: MyPageState = {
-  myInfo: {
-    favorites: [],
-    id: "",
-  },
+  myInfo: undefined,
   status: "",
   error: {},
 };

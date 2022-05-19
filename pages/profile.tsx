@@ -1,7 +1,7 @@
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import Appbar from "../components/Appbar";
 import BottomNavigation from "../components/BottomNavigation";
 import ImageUpload from "../components/ImageUpload";
@@ -10,14 +10,15 @@ import {
   modifyIntroduction,
   uploadImage,
 } from "../services/userApi";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
 
 interface Props {
-  userInfo: {
-    email?: string;
-    username?: string;
-    avatar: string;
-    introduction: string;
-  };
+  // userInfo: {
+  //   email?: string;
+  //   username?: string;
+  //   avatar: string;
+  //   introduction: string;
+  // };
 }
 
 export const Info = ({ label, content }: InfoProps) => {
@@ -29,12 +30,22 @@ export const Info = ({ label, content }: InfoProps) => {
   );
 };
 
-function Profile({ userInfo }: Props) {
+function Profile({}: Props) {
   const router = useRouter();
+  const dispatch = useAppDispatch();
+  const myInfoSelector = useAppSelector((state) => state.myInfo);
   const [img, setImg] = useState<any>();
   const [introduction, setIntroduction] = useState<string>(
-    userInfo.introduction
+    myInfoSelector.myInfo?.introduction ?? ""
   );
+
+  useEffect(() => {
+    dispatch(getMyPage());
+  }, []);
+
+  useEffect(() => {
+    setIntroduction(myInfoSelector.myInfo?.introduction ?? "");
+  }, [myInfoSelector]);
 
   const onClickUpload = () => {
     if (img) {
@@ -65,7 +76,10 @@ function Profile({ userInfo }: Props) {
           <div className="border-b p-4">
             <div className="text-xl m-4">USER IMAGE</div>
             <div className="flex justify-center">
-              <ImageUpload img={userInfo.avatar} setImg={setImg} />
+              <ImageUpload
+                img={myInfoSelector.myInfo?.avatar ?? ""}
+                setImg={setImg}
+              />
             </div>
             <div className="mt-2 flex justify-end">
               <button
@@ -104,11 +118,8 @@ function Profile({ userInfo }: Props) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const res = await getMyPage();
   return {
-    props: {
-      userInfo: res,
-    },
+    props: {},
   };
 };
 
