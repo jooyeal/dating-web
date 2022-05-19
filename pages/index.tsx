@@ -17,12 +17,12 @@ const Home = ({ favorites, currentUser }: Props) => {
   useEffect(() => {
     dispatch(getUsers());
   }, []);
-
-  const isFavorite = (userId: string) => {
-    const match = favorites.filter((favorite) => favorite.userid === userId);
-    if (match.length !== 0) return true;
-    return false;
-  };
+  console.log(usersSelector);
+  // const isFavorite = (userId: string) => {
+  //   const match = favorites.filter((favorite) => favorite.userid === userId);
+  //   if (match.length !== 0) return true;
+  //   return false;
+  // };
 
   return (
     <div>
@@ -33,7 +33,7 @@ const Home = ({ favorites, currentUser }: Props) => {
       </Head>
       <div>
         <div className="pt-20 pb-20 flex flex-col items-center gap-6">
-          {usersSelector.users.map((user, index) => {
+          {/* {usersSelector.users.map((user, index) => {
             if (user._id !== currentUser)
               return (
                 <UserCard
@@ -47,21 +47,21 @@ const Home = ({ favorites, currentUser }: Props) => {
                   isFavorite={isFavorite(user._id)}
                 />
               );
-          })}
+          })} */}
         </div>
       </div>
     </div>
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const res = await getMyPage(ctx.req.cookies["wemewe-token"]);
-  return {
-    props: {
-      favorites: res.favorites ?? [],
-      currentUser: res._id,
-    },
-  };
-};
+// export const getServerSideProps: GetServerSideProps = async (ctx) => {
+//   const res = await getMyPage(ctx.req.cookies["wemewe-token"]);
+//   return {
+//     props: {
+//       favorites: res.favorites ?? [],
+//       currentUser: res._id,
+//     },
+//   };
+// };
 
 export default Home;
