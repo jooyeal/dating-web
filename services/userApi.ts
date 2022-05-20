@@ -1,32 +1,37 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
+import { getCookie } from "cookies-next";
+import { ServerResponse } from "http";
 import { NextRouter } from "next/router";
-import { getLocalStorage } from "../utils/handleLocalStorage";
 
 const BASE_URL = "https://datingapp-back.herokuapp.com/user";
-// const BASE_URL = "http://localhost:5000/user";
 
 export const getUsers = async (token: string) => {
-  // const TOKEN = getLocalStorage("wemewe-token");
-  const response = await axios.get(`${BASE_URL}`, {
-    headers: { token },
-  });
-  return response.data;
+  try {
+    const response = await axios.get(`${BASE_URL}`, {
+      headers: { token },
+    });
+    return response.data;
+  } catch (err) {
+    return err;
+  }
 };
 
 export const getMyPage = async (token: string) => {
-  // const TOKEN = getLocalStorage("wemewe-token");
-  const response = await axios.get(`${BASE_URL}/mypage`, {
-    headers: { token },
-  });
-  return response.data;
+  try {
+    const response = await axios.get(`${BASE_URL}/mypage`, {
+      headers: { token },
+    });
+    return response.data;
+  } catch (err) {
+    return err;
+  }
 };
 
 export const uploadImage = async (formData: any, router: NextRouter) => {
   try {
-    const TOKEN = getLocalStorage("wemewe-token");
+    const token = `bearer ${getCookie("wemewe-token")}` ?? "";
     const response = await axios.put(`${BASE_URL}/upload`, formData, {
-      headers: { token: TOKEN },
+      headers: { token },
     });
     router.reload();
   } catch (err) {
@@ -39,9 +44,9 @@ export const modifyIntroduction = async (
   router: NextRouter
 ) => {
   try {
-    const TOKEN = getLocalStorage("wemewe-token");
+    const token = `bearer ${getCookie("wemewe-token")}` ?? "";
     const response = await axios.put(`${BASE_URL}/introduct`, data, {
-      headers: { token: TOKEN },
+      headers: { token },
     });
     router.reload();
   } catch (err) {}
@@ -49,12 +54,12 @@ export const modifyIntroduction = async (
 
 export const addFavorite = async (userId: string) => {
   try {
-    const TOKEN = getLocalStorage("wemewe-token");
+    const token = `bearer ${getCookie("wemewe-token")}` ?? "";
     const response = await axios.put(
       `${BASE_URL}/favorite/add/${userId}`,
       null,
       {
-        headers: { token: TOKEN },
+        headers: { token },
       }
     );
   } catch (err) {
@@ -64,12 +69,12 @@ export const addFavorite = async (userId: string) => {
 
 export const deleteFavorite = async (userId: string) => {
   try {
-    const TOKEN = getLocalStorage("wemewe-token");
+    const token = `bearer ${getCookie("wemewe-token")}` ?? "";
     const response = await axios.put(
       `${BASE_URL}/favorite/delete/${userId}`,
       null,
       {
-        headers: { token: TOKEN },
+        headers: { token },
       }
     );
   } catch (err) {
@@ -84,6 +89,6 @@ export const getChatList = async (token: string) => {
     });
     return response.data;
   } catch (err) {
-    console.log(err);
+    return err;
   }
 };

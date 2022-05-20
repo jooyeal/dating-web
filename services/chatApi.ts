@@ -1,8 +1,8 @@
-import axios from "axios";
-import { getLocalStorage } from "../utils/handleLocalStorage";
+import axios, { AxiosResponse } from "axios";
+import { getCookie } from "cookies-next";
 
 const BASE_URL = "https://datingapp-back.herokuapp.com/chat";
-// const BASE_URL = "http://localhost:5000/chat"
+
 export const getChat = async (
   token: string,
   conversationid: string | string[]
@@ -13,7 +13,7 @@ export const getChat = async (
     });
     return response.data;
   } catch (err) {
-    console.log(err);
+    return err;
   }
 };
 export const sendChat = async (data: {
@@ -23,10 +23,9 @@ export const sendChat = async (data: {
   content: string;
 }) => {
   try {
-    const TOKEN = getLocalStorage("wemewe-token");
-
+    const token = `bearer ${getCookie("wemewe-token")}` ?? "";
     const response = await axios.post(`${BASE_URL}`, data, {
-      headers: { token: TOKEN },
+      headers: { token },
     });
     return response.data;
   } catch (err) {

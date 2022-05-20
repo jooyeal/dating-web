@@ -56,6 +56,14 @@ const Home = ({ users, myInfo }: Props) => {
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const users = await getUsers(`bearer ${ctx.req.cookies["wemewe-token"]}`);
   const myInfo = await getMyPage(`bearer ${ctx.req.cookies["wemewe-token"]}`);
+  if (users.response?.status === 403 || myInfo.response?.status === 403) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
   return {
     props: {
       users,

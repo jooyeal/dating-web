@@ -132,18 +132,26 @@ function ChatRoom({
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const res = await getChat(
+  const chat = await getChat(
     `bearer ${ctx.req.cookies["wemewe-token"]}`,
     ctx.query?.id ?? ""
   );
+  if (chat.response?.status === 403) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
   return {
     props: {
-      currentUser: res.currentUser,
-      receiverId: res.receiverId,
-      conversationid: res.conversation._id,
-      chats: res.chats,
-      senderInfo: res.senderInfo,
-      receiverInfo: res.receiverInfo,
+      currentUser: chat.currentUser,
+      receiverId: chat.receiverId,
+      conversationid: chat.conversation._id,
+      chats: chat.chats,
+      senderInfo: chat.senderInfo,
+      receiverInfo: chat.receiverInfo,
     },
   };
 };

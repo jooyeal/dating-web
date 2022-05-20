@@ -111,7 +111,14 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     `bearer ${ctx.req.cookies["wemewe-token"]}`
   );
   const myInfo = await getMyPage(`bearer ${ctx.req.cookies["wemewe-token"]}`);
-
+  if (myInfo.response?.status === 403) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
   return {
     props: {
       notifications,

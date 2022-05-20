@@ -77,6 +77,14 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const chatlist = await getChatList(
     `bearer ${ctx.req.cookies["wemewe-token"]}`
   );
+  if (chatlist.response?.status === 403) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
   return {
     props: {
       chatlist,

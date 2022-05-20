@@ -3,7 +3,6 @@ import type { AppProps } from "next/app";
 import { ThemeProvider } from "next-themes";
 import { Provider } from "react-redux";
 import { store } from "../store";
-import { GetServerSideProps } from "next";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -14,12 +13,5 @@ function MyApp({ Component, pageProps }: AppProps) {
     </Provider>
   );
 }
-
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  console.log(ctx);
-  return {
-    props: {},
-  };
-};
 
 export default MyApp;
