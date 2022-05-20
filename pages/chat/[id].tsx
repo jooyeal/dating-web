@@ -129,7 +129,7 @@ function ChatRoom({
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const res = await getChat(
-    ctx.req.cookies["wemewe-token"],
+    `bearer ${ctx.req.cookies["wemewe-token"]}`,
     ctx.query?.id ?? ""
   );
   return {
