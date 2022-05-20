@@ -2,6 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { NextRouter } from "next/router";
 import { setLocalStorage } from "../utils/handleLocalStorage";
+import { setCookies } from "cookies-next";
 const BASE_URL = "https://datingapp-back.herokuapp.com/auth";
 
 let axiosConfig = {
@@ -19,6 +20,7 @@ export const excuteLogin = createAsyncThunk(
     if (response.data) {
       setLocalStorage("wemewe-userId", response.data.userInfo._id);
       setLocalStorage("wemewe-token", `bearer ${response.data.accessToken}`);
+      setCookies("token", `bearer ${response.data.accessToken}`);
     }
     return response.data.userInfo;
   }
