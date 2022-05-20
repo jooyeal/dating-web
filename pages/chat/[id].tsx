@@ -3,6 +3,8 @@ import Head from "next/head";
 import Image from "next/image";
 import React, { ChangeEvent, useState } from "react";
 import { BsArrowRightSquare } from "react-icons/bs";
+import Appbar from "../../components/Appbar";
+import BottomNavigation from "../../components/BottomNavigation";
 import { getChat, sendChat } from "../../services/chatApi";
 
 interface Props {
@@ -89,6 +91,7 @@ function ChatRoom({
         <meta name="description" content="Dating app WEMEWE's chat room" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <Appbar />
       <div className="flex flex-col items-center md:text-sm mobile:text-sm">
         <div className="flex flex-col w-full h-screen pt-16 pb-16">
           <div className="basis-11/12 h-full overflow-auto">
@@ -123,6 +126,7 @@ function ChatRoom({
           </div>
         </div>
       </div>
+      <BottomNavigation />
     </div>
   );
 }

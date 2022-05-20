@@ -1,21 +1,17 @@
 import { GetServerSideProps } from "next";
 import Head from "next/head";
-import { useEffect } from "react";
+import Appbar from "../components/Appbar";
+import BottomNavigation from "../components/BottomNavigation";
 import UserCard from "../components/UserCard";
 import { getMyPage, getUsers } from "../services/userApi";
-import { useAppDispatch, useAppSelector } from "../store/hooks";
 
-interface Props {}
-const Home = ({}: Props) => {
-  const dispatch = useAppDispatch();
-  const usersSelector = useAppSelector((state) => state.users);
-  const myInfoSelector = useAppSelector((state) => state.myInfo);
-  useEffect(() => {
-    dispatch(getUsers());
-    dispatch(getMyPage());
-  }, []);
+interface Props {
+  users: Array<UserInfo>;
+  myInfo: UserInfo;
+}
+const Home = ({ users, myInfo }: Props) => {
   const isFavorite = (userId: string) => {
-    const match = myInfoSelector.myInfo?.favorites?.filter(
+    const match = myInfo.favorites?.filter(
       (favorite) => favorite.userid === userId
     );
     if (match?.length !== 0) {
@@ -33,9 +29,10 @@ const Home = ({}: Props) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div>
+        <Appbar />
         <div className="pt-20 pb-20 flex flex-col items-center gap-6">
-          {usersSelector.users.map((user, index) => {
-            if (user._id !== myInfoSelector.myInfo?._id)
+          {users.map((user, index) => {
+            if (user._id !== myInfo._id)
               return (
                 <UserCard
                   key={index}
@@ -51,13 +48,19 @@ const Home = ({}: Props) => {
           })}
         </div>
       </div>
+      <BottomNavigation />
     </div>
   );
 };
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const users = await getUsers(`bearer ${ctx.req.cookies["wemewe-token"]}`);
+  const myInfo = await getMyPage(`bearer ${ctx.req.cookies["wemewe-token"]}`);
   return {
-    props: {},
+    props: {
+      users,
+      myInfo,
+    },
   };
 };
 

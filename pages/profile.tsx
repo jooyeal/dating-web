@@ -1,7 +1,7 @@
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import Appbar from "../components/Appbar";
 import BottomNavigation from "../components/BottomNavigation";
 import ImageUpload from "../components/ImageUpload";
@@ -10,15 +10,9 @@ import {
   modifyIntroduction,
   uploadImage,
 } from "../services/userApi";
-import { useAppDispatch, useAppSelector } from "../store/hooks";
 
 interface Props {
-  // userInfo: {
-  //   email?: string;
-  //   username?: string;
-  //   avatar: string;
-  //   introduction: string;
-  // };
+  myInfo: UserInfo;
 }
 
 export const Info = ({ label, content }: InfoProps) => {
@@ -30,22 +24,12 @@ export const Info = ({ label, content }: InfoProps) => {
   );
 };
 
-function Profile({}: Props) {
+function Profile({ myInfo }: Props) {
   const router = useRouter();
-  const dispatch = useAppDispatch();
-  const myInfoSelector = useAppSelector((state) => state.myInfo);
   const [img, setImg] = useState<any>();
   const [introduction, setIntroduction] = useState<string>(
-    myInfoSelector.myInfo?.introduction ?? ""
+    myInfo.introduction ?? ""
   );
-
-  useEffect(() => {
-    dispatch(getMyPage());
-  }, []);
-
-  useEffect(() => {
-    setIntroduction(myInfoSelector.myInfo?.introduction ?? "");
-  }, [myInfoSelector]);
 
   const onClickUpload = () => {
     if (img) {
@@ -76,10 +60,7 @@ function Profile({}: Props) {
           <div className="border-b p-4">
             <div className="text-xl m-4">USER IMAGE</div>
             <div className="flex justify-center">
-              <ImageUpload
-                img={myInfoSelector.myInfo?.avatar ?? ""}
-                setImg={setImg}
-              />
+              <ImageUpload img={myInfo.avatar ?? ""} setImg={setImg} />
             </div>
             <div className="mt-2 flex justify-end">
               <button
@@ -118,8 +99,10 @@ function Profile({}: Props) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const myInfo = await getMyPage(`bearer ${ctx.req.cookies["wemewe-token"]}`);
+
   return {
-    props: {},
+    props: { myInfo },
   };
 };
 

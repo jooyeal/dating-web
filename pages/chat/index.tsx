@@ -2,11 +2,17 @@ import { GetServerSideProps } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
+import React from "react";
+import Appbar from "../../components/Appbar";
+import BottomNavigation from "../../components/BottomNavigation";
 import { getChatList } from "../../services/userApi";
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
 
-interface Props {}
+interface Props {
+  chatlist: Array<{
+    conversationid: string;
+    targetUserInfo: UserInfo;
+  }>;
+}
 
 interface ChatListProps {
   _id: string;
@@ -40,12 +46,7 @@ const ChatList = ({ _id, avatar, username }: ChatListProps) => {
   );
 };
 
-function Chat({}: Props) {
-  const dispatch = useAppDispatch();
-  const chatUserInfosSelector = useAppSelector((state) => state.chatList);
-  useEffect(() => {
-    dispatch(getChatList());
-  }, []);
+function Chat({ chatlist }: Props) {
   return (
     <div>
       <Head>
@@ -53,10 +54,11 @@ function Chat({}: Props) {
         <meta name="description" content="Dating app WEMEWE's chat" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <Appbar />
       <div className="pt-20 pb-20 flex flex-col items-center p-4 md:text-sm mobile:text-sm">
         <div className="flex justify-center text-2xl font-bold">Chat</div>
         <div className="flex flex-col items-center w-full shadow-xl">
-          {chatUserInfosSelector.chatUserInfos?.map((chat, index) => (
+          {chatlist?.map((chat, index) => (
             <ChatList
               key={index}
               _id={chat.conversationid}
@@ -66,15 +68,18 @@ function Chat({}: Props) {
           ))}
         </div>
       </div>
+      <BottomNavigation />
     </div>
   );
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  // const chatUserInfos = await getChatList(ctx.req.cookies["wemewe-token"]);
+  const chatlist = await getChatList(
+    `bearer ${ctx.req.cookies["wemewe-token"]}`
+  );
   return {
     props: {
-      // chatUserInfos,
+      chatlist,
     },
   };
 };

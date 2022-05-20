@@ -4,18 +4,16 @@ import { getLocalStorage } from "../utils/handleLocalStorage";
 
 const BASE_URL = "https://datingapp-back.herokuapp.com/notification";
 
-export const getNotifications = createAsyncThunk("notifications", async () => {
+export const getNotifications = async (token: string) => {
   try {
-    const TOKEN = getLocalStorage("wemewe-token");
-
     const response = await axios.get(`${BASE_URL}`, {
-      headers: { token: TOKEN },
+      headers: { token },
     });
     return response.data;
   } catch (err) {
     console.log(err);
   }
-});
+};
 
 export const sendFavoriteNotification = async (receiverId: string) => {
   try {

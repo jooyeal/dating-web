@@ -6,21 +6,21 @@ import { getLocalStorage } from "../utils/handleLocalStorage";
 const BASE_URL = "https://datingapp-back.herokuapp.com/user";
 // const BASE_URL = "http://localhost:5000/user";
 
-export const getUsers = createAsyncThunk("users", async () => {
-  const TOKEN = getLocalStorage("wemewe-token");
+export const getUsers = async (token: string) => {
+  // const TOKEN = getLocalStorage("wemewe-token");
   const response = await axios.get(`${BASE_URL}`, {
-    headers: { token: TOKEN },
+    headers: { token },
   });
   return response.data;
-});
+};
 
-export const getMyPage = createAsyncThunk("mypage", async () => {
-  const TOKEN = getLocalStorage("wemewe-token");
+export const getMyPage = async (token: string) => {
+  // const TOKEN = getLocalStorage("wemewe-token");
   const response = await axios.get(`${BASE_URL}/mypage`, {
-    headers: { token: TOKEN },
+    headers: { token },
   });
   return response.data;
-});
+};
 
 export const uploadImage = async (formData: any, router: NextRouter) => {
   try {
@@ -77,15 +77,13 @@ export const deleteFavorite = async (userId: string) => {
   }
 };
 
-export const getChatList = createAsyncThunk("chatlist", async () => {
+export const getChatList = async (token: string) => {
   try {
-    const TOKEN = getLocalStorage("wemewe-token");
-
     const response = await axios.get(`${BASE_URL}/chatlist`, {
-      headers: { token: TOKEN },
+      headers: { token },
     });
     return response.data;
   } catch (err) {
     console.log(err);
   }
-});
+};

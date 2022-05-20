@@ -1,26 +1,16 @@
 import { GetServerSideProps } from "next";
 import Head from "next/head";
-import React, { useEffect } from "react";
+import React from "react";
+import Appbar from "../components/Appbar";
 import BottomNavigation from "../components/BottomNavigation";
 import { getMyPage } from "../services/userApi";
-import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { Info } from "./profile";
 
 interface Props {
-  userInfo: {
-    email: string;
-    username: string;
-    birthday: string;
-    gender: string;
-  };
+  myInfo: UserInfo;
 }
 
-function Setting({}: Props) {
-  const dispatch = useAppDispatch();
-  const myInfoSelector = useAppSelector((state) => state.myInfo);
-  useEffect(() => {
-    dispatch(getMyPage());
-  }, []);
+function Setting({ myInfo }: Props) {
   return (
     <div>
       <Head>
@@ -28,11 +18,12 @@ function Setting({}: Props) {
         <meta name="description" content="Dating app WEMEWE's setting" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <Appbar />
       <div className="pt-20 pb-20 flex justify-center p-6 md:text-sm mobile:text-sm">
         <div className="w-4/5 shadow p-2 dark:shadow-gray-100 mobile:w-full">
           <div className="p-4">
             <div className="text-xl m-4">USER INFO</div>
-            <Info label="email" content={myInfoSelector.myInfo?.email} />
+            <Info label="email" content={myInfo.email} />
             <Info
               label="password"
               content={
@@ -44,9 +35,9 @@ function Setting({}: Props) {
                 />
               }
             />
-            <Info label="username" content={myInfoSelector.myInfo?.username} />
-            <Info label="birthday" content={myInfoSelector.myInfo?.birthday} />
-            <Info label="gender" content={myInfoSelector.myInfo?.gender} />
+            <Info label="username" content={myInfo.username} />
+            <Info label="birthday" content={myInfo.birthday} />
+            <Info label="gender" content={myInfo.gender} />
             <div className="mt-2 flex justify-end">
               <button className="p-2 bg-slate-400 rounded-md hover:bg-slate-500">
                 MODIFY
@@ -61,8 +52,9 @@ function Setting({}: Props) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const myInfo = await getMyPage(`bearer ${ctx.req.cookies["wemewe-token"]}`);
   return {
-    props: {},
+    props: { myInfo },
   };
 };
 

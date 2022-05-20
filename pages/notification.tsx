@@ -1,15 +1,19 @@
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
+import Appbar from "../components/Appbar";
+import BottomNavigation from "../components/BottomNavigation";
 import UserCard from "../components/UserCard";
 import { getNotifications } from "../services/notificationApi";
 import { getMyPage } from "../services/userApi";
-import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { isFavorite } from "../utils/common";
 
-interface Props {}
+interface Props {
+  notifications: Array<UserInfo>;
+  myInfo: UserInfo;
+}
 
 interface NotificationListProps extends UserInfo {}
 
@@ -70,13 +74,7 @@ const NotificationList = ({
   );
 };
 
-function Notification({}: Props) {
-  const dispatch = useAppDispatch();
-  const myInfoSelector = useAppSelector((state) => state.myInfo);
-  const notificationInfo = useAppSelector((state) => state.notificationInfo);
-  useEffect(() => {
-    dispatch(getNotifications());
-  }, []);
+function Notification({ notifications, myInfo }: Props) {
   return (
     <>
       <div>
@@ -85,9 +83,10 @@ function Notification({}: Props) {
           <meta name="description" content="Dating app WEMEWE's notification" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
+        <Appbar />
         <div className="pt-20 pb-20 flex justify-center p-4 md:text-sm mobile:text-sm">
           <div className="flex flex-col items-center w-full shadow-xl">
-            {notificationInfo.senderInfo?.map((sender, index) => (
+            {notifications?.map((sender, index) => (
               <NotificationList
                 key={index}
                 _id={sender._id}
@@ -96,24 +95,27 @@ function Notification({}: Props) {
                 introduction={sender.introduction}
                 birthday={sender.birthday}
                 gender={sender.gender}
-                favorites={myInfoSelector.myInfo?.favorites}
+                favorites={myInfo.favorites}
               />
             ))}
           </div>
         </div>
+        <BottomNavigation />
       </div>
     </>
   );
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  // const notification = await getNotifications(ctx.req.cookies["wemewe-token"]);
-  // const myInfo = await getMyPage();
+  const notifications = await getNotifications(
+    `bearer ${ctx.req.cookies["wemewe-token"]}`
+  );
+  const myInfo = await getMyPage(`bearer ${ctx.req.cookies["wemewe-token"]}`);
 
   return {
     props: {
-      // sendersInfo: notification,
-      // favorites: myInfo.favorites ?? [],
+      notifications,
+      myInfo,
     },
   };
 };
