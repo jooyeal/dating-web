@@ -20,7 +20,7 @@ export const excuteLogin = createAsyncThunk(
     if (response.data) {
       setLocalStorage("wemewe-userId", response.data.userInfo._id);
       setLocalStorage("wemewe-token", `bearer ${response.data.accessToken}`);
-      setCookies("token", `bearer ${response.data.accessToken}`);
+      setCookies("token", `${response.data.accessToken}`);
     }
     return response.data.userInfo;
   }
